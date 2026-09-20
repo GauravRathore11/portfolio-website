@@ -179,8 +179,23 @@ export function Hero() {
           <div className="mt-6 h-px w-full bg-line" />
 
           <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-            <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted/70">
-              {[links.github.label, links.linkedin.label].join("   ·   ")}
+            <p className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.28em] text-muted/70">
+              {[links.github, links.linkedin].map((social) =>
+                social.url ? (
+                  <a
+                    key={social.label}
+                    href={social.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`${social.label} (opens in a new tab)`}
+                    className="link-line transition-colors hover:text-ice"
+                  >
+                    {social.label} <span className="text-ice">↗</span>
+                  </a>
+                ) : (
+                  <span key={social.label}>{social.label}</span>
+                ),
+              )}
             </p>
             <div className="flex items-center gap-3">
               <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">

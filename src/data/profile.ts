@@ -36,9 +36,9 @@ export const profile: Profile = {
   company: "JMAN Group",
   location: "Chennai",
   socials: [
-    // Mentioned on the resume header as plain labels without URLs.
-    { label: "GitHub" },
-    { label: "LinkedIn" },
+    // Profile URLs supplied by Gaurav Rathore; every label is clickable.
+    { label: "GitHub", href: "https://github.com/GauravRathore11" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/gaurav-rathore-/" },
   ],
   avatar: {
     src: "/profile/portrait.jpg",

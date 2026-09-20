@@ -5,9 +5,9 @@ import { profile } from "@/data/profile";
  *
  * To keep the site in sync with your resume, edit this file (and
  * `profile.ts` for content) — the components only ever read from these two
- * files. Paste your real profile URLs into `github.url` / `linkedin.url`
- * when you have them: the site renders them as links automatically, and as
- * plain labels while they are empty.
+ * files. The GitHub / LinkedIn URLs are read straight from
+ * `profile.socials`: put (or update) the real profile links there and every
+ * label on the site becomes clickable automatically.
  */
 
 export type ContactLink = {
@@ -19,9 +19,14 @@ export type ContactLink = {
 
 export type OptionalLink = {
   label: string;
-  /** Leave empty/undefined to render as a non-link label. */
+  /** Undefined/empty while no real profile URL is available. */
   url?: string;
 };
+
+/** Looks up a social profile URL by its label in `profile.socials`. */
+function socialUrl(label: string): string | undefined {
+  return profile.socials.find((social) => social.label === label)?.href;
+}
 
 export const links: {
   email: ContactLink;
@@ -41,11 +46,11 @@ export const links: {
   },
   github: {
     label: "GitHub",
-    url: "", // e.g. "https://github.com/gauravrathore"
+    url: socialUrl("GitHub"),
   },
   linkedin: {
     label: "LinkedIn",
-    url: "", // e.g. "https://www.linkedin.com/in/gauravrathore"
+    url: socialUrl("LinkedIn"),
   },
 };
 
