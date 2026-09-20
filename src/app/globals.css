@@ -1,0 +1,454 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #06080c;
+  --color-panel: #0a0e14;
+  --color-ghost: #eef4fa;
+  --color-muted: #93a0b0;
+  --color-ice: #8ea6e8;
+  --color-ember: #c0566c;
+  --color-line: rgba(238, 244, 250, 0.1);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, Consolas,
+    monospace;
+  --font-display: var(--font-instrument-serif), "Times New Roman", Georgia,
+    serif;
+}
+
+:root {
+  color-scheme: dark;
+  /* Decorative colours that follow the theme (used by SVG/canvas/ghost type). */
+  --ring-a: rgba(142, 166, 232, 0.16);
+  --ring-b: rgba(238, 244, 250, 0.1);
+  --ghost-ink: rgba(238, 244, 250, 0.045);
+  --star-fill: rgba(238, 244, 250, 0.55);
+  --link-fill: rgba(142, 166, 232, 0.16);
+  --cue-track: rgba(238, 244, 250, 0.1);
+  --cursor-dot: #8ea6e8;
+  --cursor-ring: rgba(142, 166, 232, 0.6);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-ink: #eef1f5;
+  --color-panel: #ffffff;
+  --color-ghost: #191d23;
+  --color-muted: #5b6572;
+  --color-ice: #3f5fc0;
+  --color-ember: #9c3d52;
+  --color-line: rgba(25, 29, 35, 0.12);
+  --ring-a: rgba(63, 95, 192, 0.22);
+  --ring-b: rgba(25, 29, 35, 0.12);
+  --ghost-ink: rgba(25, 29, 35, 0.05);
+  --star-fill: rgba(25, 29, 35, 0.42);
+  --link-fill: rgba(63, 95, 192, 0.2);
+  --cue-track: rgba(25, 29, 35, 0.12);
+  --cursor-dot: #3f5fc0;
+  --cursor-ring: rgba(63, 95, 192, 0.55);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+  background: var(--color-ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-ghost);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+}
+
+::selection {
+  background: rgba(142, 166, 232, 0.28);
+  color: #f7fbfc;
+}
+
+html {
+  scrollbar-color: rgba(142, 166, 232, 0.25) rgba(238, 244, 250, 0.04);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ice);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Scroll reveal ---------- */
+
+.rv {
+  opacity: 0;
+  transform: translateY(34px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--rv-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.rv.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Masked line reveals ---------- */
+
+.mask {
+  display: block;
+  overflow: hidden;
+}
+
+.mask-line {
+  display: block;
+  transform: translateY(108%);
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--rv-delay, 0ms);
+  will-change: transform;
+}
+
+.is-in .mask-line {
+  transform: translateY(0);
+}
+
+/* ---------- Marquee ---------- */
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  overflow: hidden;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--mq-speed, 46s) linear infinite;
+  will-change: transform;
+}
+
+.marquee-track.marquee-rev {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ---------- Aurora blobs ---------- */
+
+@keyframes drift-a {
+  0%,
+  100% {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(8%, 6%, 0) scale(1.15);
+  }
+}
+
+@keyframes drift-b {
+  0%,
+  100% {
+    transform: translate3d(6%, 5%, 0) scale(1.1);
+  }
+  50% {
+    transform: translate3d(-7%, -3%, 0) scale(0.95);
+  }
+}
+
+.aurora-a {
+  background: radial-gradient(
+    circle at center,
+    rgba(133, 160, 232, 0.14),
+    transparent 66%
+  );
+  animation: drift-a 26s ease-in-out infinite;
+  will-change: transform;
+}
+
+.aurora-b {
+  background: radial-gradient(
+    circle at center,
+    rgba(192, 86, 108, 0.12),
+    transparent 66%
+  );
+  animation: drift-b 32s ease-in-out infinite;
+  will-change: transform;
+}
+
+.aurora-c {
+  background: radial-gradient(
+    circle at center,
+    rgba(66, 96, 182, 0.16),
+    transparent 66%
+  );
+  animation: drift-b 38s ease-in-out infinite reverse;
+  will-change: transform;
+}
+
+/* ---------- Page-wide cosmos field ---------- */
+
+@keyframes cosmos-breathe {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.02);
+  }
+  to {
+    transform: translate3d(-1.5%, -1%, 0) scale(1.06);
+  }
+}
+
+/*
+ * A fixed sheet of stars in a restrained Alto's-Odyssey palette — blue, white
+ * and a few maroon embers over soft blue/maroon nebula washes. Static cost
+ * (pure CSS) even though it covers the page.
+ */
+.cosmos-field {
+  background-image:
+    /* stars */
+    radial-gradient(3px 3px at 8% 24%, rgba(142, 166, 232, 0.9), transparent),
+    radial-gradient(2px 2px at 18% 62%, rgba(142, 166, 232, 0.8), transparent),
+    radial-gradient(2px 2px at 27% 12%, rgba(238, 244, 250, 0.85), transparent),
+    radial-gradient(3px 3px at 36% 78%, rgba(192, 86, 108, 0.75), transparent),
+    radial-gradient(2px 2px at 44% 34%, rgba(238, 244, 250, 0.9), transparent),
+    radial-gradient(2px 2px at 55% 88%, rgba(238, 244, 250, 0.75), transparent),
+    radial-gradient(3px 3px at 64% 18%, rgba(142, 166, 232, 0.85), transparent),
+    radial-gradient(2px 2px at 73% 52%, rgba(210, 220, 246, 0.8), transparent),
+    radial-gradient(2px 2px at 82% 82%, rgba(142, 166, 232, 0.8), transparent),
+    radial-gradient(2px 2px at 90% 38%, rgba(192, 86, 108, 0.7), transparent),
+    radial-gradient(2px 2px at 96% 66%, rgba(238, 244, 250, 0.8), transparent),
+    radial-gradient(2px 2px at 12% 90%, rgba(142, 166, 232, 0.75), transparent),
+    radial-gradient(4px 4px at 48% 58%, rgba(142, 166, 232, 0.65), transparent),
+    radial-gradient(1px 1px at 30% 42%, rgba(238, 244, 250, 0.6), transparent),
+    /* nebulas */
+    radial-gradient(55% 45% at 18% 12%, rgba(48, 76, 158, 0.2), transparent 62%),
+    radial-gradient(48% 40% at 84% 74%, rgba(118, 40, 58, 0.16), transparent 62%),
+    radial-gradient(50% 44% at 66% 20%, rgba(150, 48, 60, 0.12), transparent 62%),
+    radial-gradient(52% 46% at 40% 90%, rgba(46, 72, 150, 0.14), transparent 62%);
+  animation: cosmos-breathe 60s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+:root[data-theme="light"] .cosmos-field {
+  opacity: 0.14;
+}
+
+/* ---------- Rotating rings ---------- */
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ring {
+  animation: spin-slow var(--ring-speed, 90s) linear infinite;
+  will-change: transform;
+}
+
+.spin-g {
+  transform-box: view-box;
+  transform-origin: center;
+  animation: spin-slow var(--oa, 50s) linear infinite;
+  will-change: transform;
+}
+
+/* ---------- Diagram draw-in ---------- */
+
+@keyframes dash-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.draw-path {
+  stroke-dasharray: 1 10;
+  stroke-dashoffset: 900;
+}
+
+.is-in .draw-path {
+  animation: dash-draw 3s ease-in-out 0.4s forwards;
+}
+
+/* ---------- Ghost display type ---------- */
+
+@keyframes ghost-drift {
+  0% {
+    transform: translateX(-2%);
+  }
+  100% {
+    transform: translateX(2%);
+  }
+}
+
+.ghost-type {
+  color: var(--ghost-ink);
+  animation: ghost-drift 16s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* ---------- Section entrance kicker ---------- */
+
+.kicker-line {
+  transform: scaleX(0);
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 0.3s;
+}
+
+.is-in .kicker-line {
+  transform: scaleX(1);
+}
+
+/* ---------- Gentle float (diagram panels) ---------- */
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ---------- Spine node pulse ---------- */
+
+@keyframes node-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 12px rgba(142, 166, 232, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(142, 166, 232, 0.95);
+  }
+}
+
+.node-on {
+  animation: node-pulse 2.6s ease-in-out infinite;
+}
+
+/* ---------- Accent cursor ---------- */
+
+.cursor-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: var(--cursor-dot);
+  box-shadow: 0 0 10px var(--cursor-ring);
+  transition: opacity 0.2s ease;
+}
+
+.cursor-ring {
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px;
+  border: 1px solid var(--cursor-ring);
+  transition: opacity 0.25s ease;
+}
+
+/* ---------- Hero scroll cue ---------- */
+
+@keyframes cue-drop {
+  0% {
+    transform: translateY(-120%);
+  }
+  100% {
+    transform: translateY(320%);
+  }
+}
+
+.cue-dot {
+  animation: cue-drop 2.4s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+}
+
+/* ---------- Film grain overlay ---------- */
+
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.05;
+}
+
+/* ---------- Small pieces ---------- */
+
+.chip {
+  border: 1px solid var(--color-line);
+  background: rgba(238, 244, 250, 0.02);
+  padding: 0.4rem 0.7rem;
+  letter-spacing: 0.14em;
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.chip:hover {
+  border-color: var(--color-ice);
+  color: var(--color-ghost);
+  background: rgba(238, 244, 250, 0.04);
+}
+
+.link-line {
+  position: relative;
+  color: var(--color-ghost);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.link-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: var(--color-ice);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link-line:hover::after,
+.link-line:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .rv {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .mask-line {
+    transform: none !important;
+  }
+
+  .ghost-type {
+    animation: none !important;
+  }
+}
