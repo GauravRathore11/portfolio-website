@@ -4,9 +4,11 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { skillGroups } from "@/data/profile";
 
 export function Skills() {
-  const [languages, backend, cloud, data, core] = skillGroups;
-  const marqueeA = [...languages.items, ...backend.items];
-  const marqueeB = [...cloud.items, ...data.items, ...core.items];
+  // Split the groups in half for the two marquees so the ribbons stay balanced
+  // however many groups are declared in `profile.ts`.
+  const half = Math.ceil(skillGroups.length / 2);
+  const marqueeA = skillGroups.slice(0, half).flatMap((group) => group.items);
+  const marqueeB = skillGroups.slice(half).flatMap((group) => group.items);
 
   return (
     <section id="skills" className="relative overflow-hidden">

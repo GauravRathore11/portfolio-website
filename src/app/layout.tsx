@@ -27,16 +27,19 @@ export const metadata: Metadata = {
     template: "%s — Gaurav Rathore",
   },
   description:
-    "Portfolio of Gaurav Rathore, Software Engineer at JMAN Group, Chennai — backend services, REST APIs, Next.js/TypeScript applications, Azure and Databricks.",
+    "Portfolio of Gaurav Rathore, Software Engineer at JMAN Group, Chennai — backend services and REST APIs in Python/FastAPI and Next.js/TypeScript, JWT auth and RBAC, LLM agent and RAG systems, deployed on Azure and Vercel.",
   keywords: [
     "Gaurav Rathore",
     "portfolio",
     "software engineer",
     "JMAN Group",
+    "FastAPI",
     "Next.js",
     "TypeScript",
     "Azure",
-    "Databricks",
+    "AI Agents",
+    "RAG",
+    "LLM",
   ],
 };
 
